@@ -17,8 +17,10 @@ public class Main extends Application {
 
         primaryStage.setTitle("FXGraphs");
 
-        Parent root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Parent root = FXMLLoader.load(getClass().getResource("/main.fxml"));
+        primaryStage.setScene(new Scene(root, 960, 540));
+        primaryStage.setMinWidth(640);
+        primaryStage.setMinHeight(540);
         primaryStage.show();
     }
 

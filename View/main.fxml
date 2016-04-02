@@ -1,0 +1,47 @@
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.SVGPath?>
+<GridPane fx:controller="com.FXGraphs.Controller.Controller"
+          xmlns:fx="http://javafx.com/fxml">
+
+    <GridPane alignment="TOP_CENTER" hgap="10" vgap="10" >
+        <padding><Insets top="20" right="5" bottom="20" left="5"/></padding>
+
+        <HBox spacing="10" alignment="TOP_CENTER"
+              GridPane.columnIndex="0"
+              GridPane.rowIndex="0" >
+            <Button text="New function"
+            />
+        </HBox>
+
+        <HBox spacing="10" alignment="TOP_CENTER"
+              GridPane.columnIndex="1"
+              GridPane.rowIndex="0" >
+            <Button text="Save"
+            />
+        </HBox>
+
+        <HBox spacing="10" alignment="TOP_CENTER"
+              GridPane.columnIndex="2"
+              GridPane.rowIndex="0" >
+            <Button text="Load"
+            />
+        </HBox>
+    </GridPane>
+
+    <Pane maxWidth="-Infinity" maxHeight="-Infinity">
+        <children>
+            <SVGPath content="M320,100 L320,500" stroke="BLACK" strokeWidth="3.0">
+            </SVGPath>
+        </children>
+        <children>
+            <SVGPath content="M120,300 L520,300" stroke="BLACK" strokeWidth="3.0">
+            </SVGPath>
+        </children>
+    </Pane>
+
+</GridPane>
