@@ -1,5 +1,6 @@
 package com.FXGraphs.View;
 
+import com.FXGraphs.Model.PersonalJexlArithmetic;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
@@ -17,7 +18,8 @@ import org.apache.commons.jexl3.MapContext;
 public class Graph extends Pane {
 
     private Path path;
-    private static final JexlEngine jexl = new JexlBuilder().cache(512).strict(true).silent(false).create();
+    private static final JexlEngine jexl = new JexlBuilder().cache(512).strict(true).silent(false).
+            arithmetic(new PersonalJexlArithmetic(true)).create();
     private JexlExpression f;
     private MapContext mc = new MapContext();
 
@@ -48,7 +50,7 @@ public class Graph extends Pane {
 
         double x = xMin;
         mc.set("x", x);
-        double y = (Double) f.evaluate(mc);
+        double y = new Double(f.evaluate(mc).toString());
 
 
         path.getElements().add(new MoveTo(mapX(x, axes), mapY(y, axes)));
@@ -56,7 +58,7 @@ public class Graph extends Pane {
         x += xInc;
         mc.set("x", x);
         while (x < xMax) {
-            y = (Double) f.evaluate(mc);
+            y = new Double(f.evaluate(mc).toString());
 
             path.getElements().add(new LineTo(mapX(x, axes), mapY(y, axes)));
 
