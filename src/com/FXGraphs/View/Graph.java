@@ -98,4 +98,12 @@ public class Graph extends Pane {
     public void setColor(Color color) {
         path.setStroke(color);
     }
+
+    /**
+     * Sets the width of the stroke
+     * @param width
+     */
+    public void setStrokeWidth(double width) {
+        path.setStrokeWidth(width);
+    }
 }

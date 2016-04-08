@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.apache.commons.jexl3.JexlException;
 
 public class Main extends Application {
 
@@ -71,6 +72,8 @@ public class Main extends Application {
 
     private class AddFunctionStage extends Stage{
 
+        private Color graphColor = Color.YELLOW;
+
         public AddFunctionStage() {
 
             GridPane grid = new GridPane();
@@ -78,33 +81,63 @@ public class Main extends Application {
             grid.setHgap(10);
             grid.setVgap(10);
             grid.setPadding(new Insets(25, 25, 25, 25));
+            grid.setStyle("-fx-background-color: rgb(35, 39, 50);");
 
-            Label userName = new Label("Insert function:");
-            grid.add(userName, 0, 1);
+            Label functionName = new Label("Insert function:");
+            functionName.setTextFill(Color.WHITE);
+            grid.add(functionName, 0, 1);
 
             TextField userTextField = new TextField();
             grid.add(userTextField, 1, 1);
+
+            Label stroke = new Label("Set stroke (default 2.0)");
+            stroke.setTextFill(Color.WHITE);
+            grid.add(stroke, 0, 2);
+
+            TextField strokeWidth = new TextField();
+            grid.add(strokeWidth, 1, 2);
+
+            HBox box = new HBox();
+            final ColorPicker colorPicker = new ColorPicker();
+            colorPicker.setValue(Color.YELLOW);
+            box.getChildren().add(colorPicker);
+            grid.add(box, 0,3);
 
             Button btn = new Button("Add");
             HBox hbBtn = new HBox(10);
             hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
             hbBtn.getChildren().add(btn);
-            grid.add(hbBtn, 1, 4);
+            grid.add(hbBtn, 1, 6);
+
+            colorPicker.setOnAction(event -> graphColor = colorPicker.getValue());
 
             btn.setOnAction(e -> {
-                Graph graph = new Graph(
-                        userTextField.getText(),
-                        axes.getxLow(), axes.getxHi(), 0.1,
-                        axes
-                );
-                graph.setColor(Color.YELLOW);
-                layout.getChildren().add(graph);
-                layout.requestLayout();
-                getScene().getWindow().hide();
+                Graph graph;
+                try {
+                    graph = new Graph(
+                            userTextField.getText(),
+                            axes.getxLow(), axes.getxHi(), 0.1,
+                            axes
+                    );
+                    if (!strokeWidth.getText().isEmpty()) {
+                        double nr = new Double(strokeWidth.getText());
+                        graph.setStrokeWidth(nr);
+                    }
+                    graph.setColor(graphColor);
+                    layout.getChildren().add(graph);
+                    layout.requestLayout();
+                    getScene().getWindow().hide();
+                } catch (JexlException jexlException) {
+                    System.out.println("There is a problem parsing the equation");
+                } catch (NumberFormatException exception) {
+                    System.out.println("Wrong input at set graph stroke");
+                }
             });
 
             setTitle("Add Function");
-            setScene(new Scene(grid, 300, 250));
+            setScene(new Scene(grid, 450, 350));
+            setMinWidth(450);
+            setMinHeight(350);
             show();
 
         }
