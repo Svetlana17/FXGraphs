@@ -33,14 +33,7 @@ public class Main extends Application {
 
         initMenuBar();
 
-        Graph graph = new Graph(
-                "0.25 * (x + 4) * (x + 1) * (x - 2)",
-                axes.getxLow(), axes.getxHi(), 0.1,
-                axes
-        );
-
         layout = new StackPane(axes);
-        layout.getChildren().add(graph);
         layout.setPadding(new Insets(20));
 
         VBox vBox = new VBox();
@@ -142,7 +135,7 @@ public class Main extends Application {
                     layout.requestLayout();
                     getScene().getWindow().hide();
                 } catch (JexlException jexlException) {
-                    System.out.println("There is a problem parsing the equation");
+                    System.out.println("There is a problem with parsing the equation");
                 } catch (NumberFormatException exception) {
                     System.out.println("Wrong input at set graph stroke");
                 }

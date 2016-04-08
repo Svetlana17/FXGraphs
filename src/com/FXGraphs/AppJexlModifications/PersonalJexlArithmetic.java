@@ -25,4 +25,55 @@ public class PersonalJexlArithmetic extends JexlArithmetic {
         return Math.pow(l, r);
 
     }
+
+    /**
+     * Compute sinus
+     * @param exp
+     * @return
+     */
+    public Object sin(Object exp) {
+        double nr = this.toDouble(exp);
+        return Math.sin(nr);
+    }
+
+    /**
+     * Compute cosinus
+     * @param exp
+     * @return
+     */
+    public Object cos(Object exp) {
+        double nr = this.toDouble(exp);
+        return Math.cos(nr);
+    }
+
+    /**
+     * Compute tangent
+     * @param exp
+     * @return
+     */
+    public Object tan(Object exp) {
+        double nr = this.toDouble(exp);
+        return Math.tan(nr);
+    }
+
+    /**
+     * Compute cotangent
+     * @param exp
+     * @return
+     */
+    public Object ctan(Object exp) {
+        double nr = this.toDouble(exp);
+        return 1.0 / Math.tan(nr);
+    }
+
+    /**
+     * Compute log in base e
+     * @param exp
+     * @return
+     */
+    public Object log(Object exp) {
+        double nr = this.toDouble(exp);
+        return Math.log(nr);
+    }
+
 }
