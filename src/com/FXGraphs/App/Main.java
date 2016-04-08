@@ -29,7 +29,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         initMenuBar();
 
@@ -66,7 +66,21 @@ public class Main extends Application {
         menuFile.getItems().addAll(add, new SeparatorMenuItem(), exit);
 
         Menu menuEdit = new Menu("Edit");
+
         Menu menuView = new Menu("View");
+        MenuItem reset = new MenuItem("Reset View");
+        reset.setOnAction(event -> {
+            for (int i = layout.getChildren().size() - 1; i > 0; i--) {
+                layout.getChildren().remove(i);
+            }
+        });
+        MenuItem undo = new MenuItem("Undo");
+        undo.setOnAction(event -> {
+            if (layout.getChildren().size() > 1)
+                layout.getChildren().remove(layout.getChildren().size() - 1);
+        });
+        menuView.getItems().addAll(reset, undo);
+
         menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
     }
 
