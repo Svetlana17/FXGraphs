@@ -18,8 +18,8 @@ public class Main extends Application {
     private MenuBar menuBar;
     private StackPane layout;
     private Axes axes = new Axes(
-            500, 500,
-            -8, 8, 1,
+            600, 600,
+            -11, 11, 1,
             -11, 11, 1
     );
 
@@ -34,7 +34,7 @@ public class Main extends Application {
 
         Graph graph = new Graph(
                 "0.25 * (x + 4) * (x + 1) * (x - 2)",
-                -8, 8, 0.1,
+                axes.getxLow(), axes.getxHi(), 0.1,
                 axes
         );
 
@@ -94,7 +94,7 @@ public class Main extends Application {
             btn.setOnAction(e -> {
                 Graph graph = new Graph(
                         userTextField.getText(),
-                        -8, 8, 0.1,
+                        axes.getxLow(), axes.getxHi(), 0.1,
                         axes
                 );
                 graph.setColor(Color.YELLOW);

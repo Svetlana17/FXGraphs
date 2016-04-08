@@ -27,8 +27,8 @@ public class Graph extends Pane {
      * Graph class constructor
      * Creates a Pane object that represents a drawing of a function graph
      * @param f the function
-     * @param xMin minimum value for x so that f(x) = 0
-     * @param xMax maximum value for x so that f(x) = 0
+     * @param xMin minimum value for x
+     * @param xMax maximum value for x
      * @param xInc incrementation of x
      * @param axes axes used to draw the graph
      */
