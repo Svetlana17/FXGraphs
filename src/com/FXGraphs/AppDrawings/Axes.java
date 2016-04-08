@@ -1,4 +1,4 @@
-package com.FXGraphs.View;
+package com.FXGraphs.AppDrawings;
 
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Side;

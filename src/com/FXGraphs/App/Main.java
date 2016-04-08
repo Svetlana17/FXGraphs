@@ -1,6 +1,6 @@
-package com.FXGraphs.Model;
+package com.FXGraphs.App;
 
-import com.FXGraphs.View.*;
+import com.FXGraphs.AppDrawings.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

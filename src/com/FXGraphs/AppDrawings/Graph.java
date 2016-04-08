@@ -1,6 +1,6 @@
-package com.FXGraphs.View;
+package com.FXGraphs.AppDrawings;
 
-import com.FXGraphs.Model.PersonalJexlArithmetic;
+import com.FXGraphs.AppJexlModifications.PersonalJexlArithmetic;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;

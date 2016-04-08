@@ -1,4 +1,4 @@
-package com.FXGraphs.Model;
+package com.FXGraphs.AppJexlModifications;
 
 import org.apache.commons.jexl3.JexlArithmetic;
 
