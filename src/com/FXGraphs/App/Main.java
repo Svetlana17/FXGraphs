@@ -79,6 +79,23 @@ public class Main extends Application {
 
         });
         MenuItem load = new MenuItem("Load", new ImageView(new Image("/save.png")));
+        load.setOnAction(event -> {
+
+            FileChooser fileChooser = new FileChooser();
+
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            Stage stage = new Stage();
+
+            File file = fileChooser.showOpenDialog(stage);
+
+            if (file != null) {
+                layout.getChildren().add(mIOManager.loadPNG(file));
+                layout.requestLayout();
+            }
+
+        });
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction(t -> System.exit(0));
         menuFile.getItems().addAll(add, save, load, new SeparatorMenuItem(), exit);
