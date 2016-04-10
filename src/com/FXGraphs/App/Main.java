@@ -8,6 +8,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -58,9 +60,9 @@ public class Main extends Application {
 
         menuBar = new MenuBar();
         Menu menuFile = new Menu("File");
-        MenuItem add = new MenuItem("Add Function");
+        MenuItem add = new MenuItem("Add Function", new ImageView(new Image("/function.png")));
         add.setOnAction(event -> new AddFunctionStage());
-        MenuItem save = new MenuItem("Save");
+        MenuItem save = new MenuItem("Save", new ImageView(new Image("/save.png")));
         save.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
 
@@ -76,7 +78,7 @@ public class Main extends Application {
             }
 
         });
-        MenuItem load = new MenuItem("Load");
+        MenuItem load = new MenuItem("Load", new ImageView(new Image("/save.png")));
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction(t -> System.exit(0));
         menuFile.getItems().addAll(add, save, load, new SeparatorMenuItem(), exit);
@@ -87,7 +89,7 @@ public class Main extends Application {
         menuEdit.getItems().add(config);
 
         Menu menuView = new Menu("View");
-        MenuItem reset = new MenuItem("Reset View");
+        MenuItem reset = new MenuItem("Reset View", new ImageView(new Image("refresh.png")));
         reset.setOnAction(event -> {
             for (int i = layout.getChildren().size() - 1; i > 0; i--) {
                 layout.getChildren().remove(i);
