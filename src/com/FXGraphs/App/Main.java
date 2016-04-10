@@ -1,6 +1,7 @@
 package com.FXGraphs.App;
 
 import com.FXGraphs.AppDrawings.*;
+import com.FXGraphs.AppExceptions.IllegalValue;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +20,6 @@ public class Main extends Application {
     private MenuBar menuBar;
     private StackPane layout;
     private Axes axes = new Axes(
-            600, 600,
             -11, 11, 1,
             -11, 11, 1
     );
@@ -51,14 +51,15 @@ public class Main extends Application {
         menuBar = new MenuBar();
         Menu menuFile = new Menu("File");
         MenuItem add = new MenuItem("Add Function");
-        add.setOnAction(event -> {
-            new AddFunctionStage();
-        });
+        add.setOnAction(event -> new AddFunctionStage());
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction(t -> System.exit(0));
         menuFile.getItems().addAll(add, new SeparatorMenuItem(), exit);
 
         Menu menuEdit = new Menu("Edit");
+        MenuItem config = new MenuItem("Config axes");
+        config.setOnAction(event -> new ConfigStage());
+        menuEdit.getItems().add(config);
 
         Menu menuView = new Menu("View");
         MenuItem reset = new MenuItem("Reset View");
@@ -138,6 +139,8 @@ public class Main extends Application {
                     System.out.println("There is a problem with parsing the equation");
                 } catch (NumberFormatException exception) {
                     System.out.println("Wrong input at set graph stroke");
+                } catch (NullPointerException exception) {
+                    System.out.println("Missing information");
                 }
             });
 
@@ -145,6 +148,105 @@ public class Main extends Application {
             setScene(new Scene(grid, 450, 350));
             setMinWidth(450);
             setMinHeight(350);
+            show();
+
+        }
+
+    }
+
+    private class ConfigStage extends Stage {
+
+        public ConfigStage() {
+
+            GridPane grid = new GridPane();
+            grid.setAlignment(Pos.CENTER);
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(25, 25, 25, 25));
+            grid.setStyle("-fx-background-color: rgb(35, 39, 50);");
+
+            Label setXHi = new Label("Maximum value of x ");
+            setXHi.setTextFill(Color.WHITE);
+            grid.add(setXHi, 0, 1);
+
+            TextField xHiText = new TextField();
+            grid.add(xHiText, 1, 1);
+
+            Label setXLow = new Label("Minimum value of x ");
+            setXLow.setTextFill(Color.WHITE);
+            grid.add(setXLow, 0, 2);
+
+            TextField xLowText = new TextField();
+            grid.add(xLowText, 1, 2);
+
+            Label setYHi = new Label("Maximum value of y ");
+            setYHi.setTextFill(Color.WHITE);
+            grid.add(setYHi, 0, 3);
+
+            TextField yHiText = new TextField();
+            grid.add(yHiText, 1, 3);
+
+            Label setYLow = new Label("Minimum value of y ");
+            setYLow.setTextFill(Color.WHITE);
+            grid.add(setYLow, 0, 4);
+
+            TextField yLowText = new TextField();
+            grid.add(yLowText, 1, 4);
+
+            Label setTick = new Label("Set tick unit for X and Y axes");
+            setTick.setTextFill(Color.WHITE);
+            grid.add(setTick, 0, 5);
+
+            TextField xTick = new TextField();
+            grid.add(xTick, 1, 5);
+
+            TextField yTick = new TextField();
+            grid.add(yTick, 2, 5);
+
+            Button btn = new Button("Set");
+            HBox hbBtn = new HBox(10);
+            hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+            hbBtn.getChildren().add(btn);
+            grid.add(hbBtn, 1, 7);
+
+            btn.setOnAction(event -> {
+
+                try {
+                    if (!xHiText.getText().isEmpty())
+                        axes.setxHi(Double.valueOf(xHiText.getText()));
+                    if (!xLowText.getText().isEmpty())
+                        axes.setxLow(Double.valueOf(xLowText.getText()));
+                    if (!yHiText.getText().isEmpty())
+                        axes.setyHi(Double.valueOf(yHiText.getText()));
+                    if (!yLowText.getText().isEmpty())
+                        axes.setyLow(Double.valueOf(yLowText.getText()));
+                    if (!xTick.getText().isEmpty())
+                        axes.setxTickUnit(Double.valueOf(xTick.getText()));
+                    if (!yTick.getText().isEmpty())
+                        axes.setyTickUnit(Double.valueOf(yTick.getText()));
+                    axes.repaint();
+                    for (int i = 1; i < layout.getChildren().size(); i++) {
+                        ((Graph) layout.getChildren().get(i)).setxMin(axes.getxLow());
+                        ((Graph) layout.getChildren().get(i)).setxMax(axes.getxHi());
+                        ((Graph) layout.getChildren().get(i)).repaint();
+                    }
+                    getScene().getWindow().hide();
+                } catch (NumberFormatException exception) {
+                    System.out.println("Input is not number");
+                    exception.printStackTrace();
+                } catch (NullPointerException exception) {
+                    System.out.println("Missing information");
+                } catch (IllegalValue exception) {
+                    System.out.println("Wrong value");
+                    exception.printStackTrace();
+                }
+
+            });
+
+            setTitle("Configure axes");
+            setScene(new Scene(grid, 550, 350));
+            setMinWidth(450);
+            setMaxHeight(450);
             show();
 
         }

@@ -1,5 +1,6 @@
 package com.FXGraphs.AppDrawings;
 
+import com.FXGraphs.AppExceptions.IllegalValue;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Side;
 import javafx.scene.chart.NumberAxis;
@@ -14,13 +15,12 @@ public class Axes extends Pane {
     private NumberAxis yAxis;
     private double xLow, xHi;
     private double yLow, yHi;
-    private int width, height;
     private double xTickUnit, yTickUnit;
+    private int width = 600;
+    private int height = 600;
 
     /**
      * Axes class constructor
-     * @param width pane width
-     * @param height pane height
      * @param xLow lowest value of x on the x axe
      * @param xHi highest value of x on the x axe
      * @param xTickUnit x axe tick unit
@@ -29,13 +29,10 @@ public class Axes extends Pane {
      * @param yTickUnit y axe tick unit
      */
     public Axes(
-            int width, int height,
             double xLow, double xHi, double xTickUnit,
             double yLow, double yHi, double yTickUnit
     ) {
 
-        this.width = width;
-        this.height = height;
         this.xLow = xLow;
         this.xHi = xHi;
         this.yLow = yLow;
@@ -58,7 +55,7 @@ public class Axes extends Pane {
 
     private void initXAxis() {
 
-        xAxis = new NumberAxis(xLow, xHi, xTickUnit);
+        xAxis = new NumberAxis("X", xLow, xHi, xTickUnit);
         xAxis.setSide(Side.BOTTOM);
         xAxis.setMinorTickVisible(false);
         xAxis.setPrefWidth(width);
@@ -67,7 +64,7 @@ public class Axes extends Pane {
 
     private void initYAxis() {
 
-        yAxis = new NumberAxis(yLow, yHi, yTickUnit);
+        yAxis = new NumberAxis("Y", yLow, yHi, yTickUnit);
         yAxis.setSide(Side.LEFT);
         yAxis.setMinorTickVisible(false);
         yAxis.setPrefHeight(height);
@@ -99,40 +96,59 @@ public class Axes extends Pane {
     /**
      * Set the highest value of x on the axes
      * @param xHi
+     * @throws IllegalValue
      */
-    public void setxHi(double xHi) {
+    public void setxHi(double xHi) throws IllegalValue {
+        if (xHi < 0)
+            throw new IllegalValue("Value is lower than 0");
         this.xHi = xHi;
     }
 
     /**
      * Sets the lowest value of x on the axes
      * @param xLow
+     * @throws IllegalValue
      */
-    public void setxLow(double xLow) {
+    public void setxLow(double xLow) throws IllegalValue {
+        if (xLow > 0) {
+            throw new IllegalValue("Value is higher than 0");
+        }
         this.xLow = xLow;
     }
 
     /**
      * Sets the tick unit of the x axe
      * @param xTickUnit
+     * @throws IllegalValue
      */
-    public void setxTickUnit(double xTickUnit) {
+    public void setxTickUnit(double xTickUnit) throws IllegalValue {
+        if (xTickUnit < 0.1) {
+            throw new IllegalValue("Value too low");
+        }
         this.xTickUnit = xTickUnit;
     }
 
     /**
      * Sets the lowest value of y on the axes
      * @param yLow
+     * @throws IllegalValue
      */
-    public void setyLow(double yLow) {
+    public void setyLow(double yLow) throws IllegalValue {
+        if (yLow > 0) {
+            throw new IllegalValue("Value is higher than 0");
+        }
         this.yLow = yLow;
     }
 
     /**
      * Sets the highest value of x on the axes
      * @param yHi
+     * @throws IllegalValue
      */
-    public void setyHi(double yHi) {
+    public void setyHi(double yHi) throws IllegalValue {
+        if (yHi < 0) {
+            throw new IllegalValue("Value is lower than 0");
+        }
         this.yHi = yHi;
     }
 
@@ -140,7 +156,10 @@ public class Axes extends Pane {
      * Sets the tick unit of the y axe
      * @param yTickUnit
      */
-    public void setyTickUnit(double yTickUnit) {
+    public void setyTickUnit(double yTickUnit) throws IllegalValue{
+        if (yTickUnit < 0.1) {
+            throw new IllegalValue("Value too low");
+        }
         this.yTickUnit = yTickUnit;
     }
 
@@ -158,6 +177,21 @@ public class Axes extends Pane {
      */
     public double getxHi() {
         return xHi;
+    }
+
+    /**
+     * Repaints the axes
+     */
+    public void repaint() {
+        getChildren().removeAll(xAxis, yAxis);
+
+        setSize();
+        initXAxis();
+        initYAxis();
+
+        getChildren().setAll(xAxis, yAxis);
+
+        requestLayout();
     }
 
 }

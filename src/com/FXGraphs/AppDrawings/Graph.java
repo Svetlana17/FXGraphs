@@ -18,6 +18,10 @@ import org.apache.commons.jexl3.MapContext;
 public class Graph extends Pane {
 
     private Path path;
+    private Color color;
+    private Axes axes;
+    private double strokeWidth;
+    private double xMin, xMax, xInc;
     private static final JexlEngine jexl = new JexlBuilder().cache(512).strict(true).silent(false).
             arithmetic(new PersonalJexlArithmetic(true)).create();
     private JexlExpression f;
@@ -26,7 +30,6 @@ public class Graph extends Pane {
     /**
      * Graph class constructor
      * Creates a Pane object that represents a drawing of a function graph
-     * @param f the function
      * @param xMin minimum value for x
      * @param xMax maximum value for x
      * @param xInc incrementation of x
@@ -39,9 +42,15 @@ public class Graph extends Pane {
     ) {
 
         f = jexl.createExpression(function);
+        this.color = Color.ORANGE.deriveColor(0, 1, 1, 0.6);
+        this.strokeWidth = 2;
+        this.axes = axes;
+        this.xMin = xMin;
+        this.xMax = xMax;
+        this.xInc = xInc;
         path = new Path();
-        path.setStroke(Color.ORANGE.deriveColor(0, 1, 1, 0.6));
-        path.setStrokeWidth(2);
+        path.setStroke(color);
+        path.setStrokeWidth(strokeWidth);
 
         path.setClip( new Rectangle(
                         0, 0,
@@ -96,7 +105,8 @@ public class Graph extends Pane {
      * @param color
      */
     public void setColor(Color color) {
-        path.setStroke(color);
+        this.color = color;
+        path.setStroke(this.color);
     }
 
     /**
@@ -104,6 +114,66 @@ public class Graph extends Pane {
      * @param width
      */
     public void setStrokeWidth(double width) {
-        path.setStrokeWidth(width);
+        this.strokeWidth = width;
+        path.setStrokeWidth(this.strokeWidth);
+    }
+
+    /**
+     * Sets the minimum value for x
+     * @param xMin
+     */
+    public void setxMin(double xMin) {
+        this.xMin = xMin;
+    }
+
+    /**
+     * Sets the maximum value for x
+     * @param xMax
+     */
+    public void setxMax(double xMax) {
+        this.xMax = xMax;
+    }
+
+    /**
+     * Repaints the graph
+     */
+    public void repaint() {
+
+        getChildren().removeAll(path);
+
+        path = new Path();
+        path.setStroke(color);
+        path.setStrokeWidth(strokeWidth);
+
+        path.setClip( new Rectangle(
+                0, 0,
+                axes.getPrefWidth(),
+                axes.getPrefHeight()));
+
+        double x = xMin;
+        mc.set("x", x);
+        double y = new Double(f.evaluate(mc).toString());
+
+
+        path.getElements().add(new MoveTo(mapX(x, axes), mapY(y, axes)));
+
+        x += xInc;
+        mc.set("x", x);
+        while (x < xMax) {
+            y = new Double(f.evaluate(mc).toString());
+
+            path.getElements().add(new LineTo(mapX(x, axes), mapY(y, axes)));
+
+            x += xInc;
+            mc.set("x", x);
+        }
+
+        setMinSize(Pane.USE_PREF_SIZE, Pane.USE_PREF_SIZE);
+        setPrefSize(axes.getPrefWidth(), axes.getPrefHeight());
+        setMaxSize(Pane.USE_PREF_SIZE, Pane.USE_PREF_SIZE);
+
+        getChildren().setAll(path);
+
+        requestLayout();
     }
 }
