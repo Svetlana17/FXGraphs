@@ -2,6 +2,7 @@ package com.FXGraphs.App;
 
 import com.FXGraphs.AppDrawings.*;
 import com.FXGraphs.AppExceptions.IllegalValue;
+import com.FXGraphs.AppImageIO.IOManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,11 +13,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.jexl3.JexlException;
 
+import java.io.File;
+
 public class Main extends Application {
 
+    private IOManager mIOManager = new IOManager();
     private MenuBar menuBar;
     private StackPane layout;
     private Axes axes = new Axes(
@@ -34,6 +39,7 @@ public class Main extends Application {
         initMenuBar();
 
         layout = new StackPane(axes);
+        layout.setStyle("-fx-background-color: rgb(35, 39, 50);");
         layout.setPadding(new Insets(20));
 
         VBox vBox = new VBox();
@@ -41,6 +47,8 @@ public class Main extends Application {
         vBox.getChildren().addAll(menuBar, layout);
 
         primaryStage.setTitle("FXGraphs");
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(600);
         primaryStage.setScene(new Scene(vBox));
         primaryStage.show();
 
@@ -52,9 +60,26 @@ public class Main extends Application {
         Menu menuFile = new Menu("File");
         MenuItem add = new MenuItem("Add Function");
         add.setOnAction(event -> new AddFunctionStage());
+        MenuItem save = new MenuItem("Save");
+        save.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
+            fileChooser.getExtensionFilters().add(extFilter);
+
+            Stage stage = new Stage();
+
+            File file = fileChooser.showSaveDialog(stage);
+
+            if (file != null) {
+                mIOManager.saveAsPNG(layout, file);
+            }
+
+        });
+        MenuItem load = new MenuItem("Load");
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction(t -> System.exit(0));
-        menuFile.getItems().addAll(add, new SeparatorMenuItem(), exit);
+        menuFile.getItems().addAll(add, save, load, new SeparatorMenuItem(), exit);
 
         Menu menuEdit = new Menu("Edit");
         MenuItem config = new MenuItem("Config axes");

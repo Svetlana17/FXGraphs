@@ -4,7 +4,9 @@ import com.FXGraphs.AppExceptions.IllegalValue;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Side;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * A Pane object that represents a XY axes system
@@ -44,7 +46,16 @@ public class Axes extends Pane {
         initXAxis();
         initYAxis();
 
-        getChildren().setAll(xAxis, yAxis);
+        Label xLabel = new Label("X");
+        xLabel.setTranslateX(600);
+        xLabel.setTranslateY(280);
+        xLabel.setTextFill(Color.WHITE);
+
+        Label yLabel = new Label("Y");
+        yLabel.setTranslateX(320);
+        yLabel.setTextFill(Color.WHITE);
+
+        getChildren().setAll(xAxis, xLabel, yAxis, yLabel);
     }
 
     private void setSize() {
@@ -55,7 +66,7 @@ public class Axes extends Pane {
 
     private void initXAxis() {
 
-        xAxis = new NumberAxis("X", xLow, xHi, xTickUnit);
+        xAxis = new NumberAxis(xLow, xHi, xTickUnit);
         xAxis.setSide(Side.BOTTOM);
         xAxis.setMinorTickVisible(false);
         xAxis.setPrefWidth(width);
@@ -64,7 +75,7 @@ public class Axes extends Pane {
 
     private void initYAxis() {
 
-        yAxis = new NumberAxis("Y", yLow, yHi, yTickUnit);
+        yAxis = new NumberAxis(yLow, yHi, yTickUnit);
         yAxis.setSide(Side.LEFT);
         yAxis.setMinorTickVisible(false);
         yAxis.setPrefHeight(height);
@@ -189,7 +200,16 @@ public class Axes extends Pane {
         initXAxis();
         initYAxis();
 
-        getChildren().setAll(xAxis, yAxis);
+        Label xLabel = new Label("X");
+        xLabel.setTranslateX(600);
+        xLabel.setTranslateY(280);
+        xLabel.setTextFill(Color.WHITE);
+
+        Label yLabel = new Label("Y");
+        yLabel.setTranslateX(320);
+        yLabel.setTextFill(Color.WHITE);
+
+        getChildren().setAll(xAxis, yAxis, xLabel, yLabel);
 
         requestLayout();
     }
